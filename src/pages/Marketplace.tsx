@@ -1,9 +1,20 @@
 import { useState } from 'react';
-import { Clock, Filter, Flame, Search, Heart, TrendingUp, Shield, Star, ChevronRight } from 'lucide-react';
+import { Clock, Filter, Flame, Search, Heart, TrendingUp, Shield, Star, ChevronRight, Plus } from 'lucide-react';
+import BidModal from '../components/BidModal';
+import CreateAuctionModal from '../components/CreateAuctionModal';
 
 export default function Marketplace() {
   const [activeTab, setActiveTab] = useState('Auctions');
   const [favorites, setFavorites] = useState<string[]>([]);
+  
+  // Modal states
+  const [isBidModalOpen, setIsBidModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedAuction, setSelectedAuction] = useState<any>(null);
+  
+  // Toast state
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const toggleFavorite = (id: string) => {
     setFavorites(prev => 
@@ -11,10 +22,51 @@ export default function Marketplace() {
     );
   };
 
+  const showSuccessToast = (message: string) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const handlePlaceBid = (item: any) => {
+    setSelectedAuction(item);
+    setIsBidModalOpen(true);
+  };
+
+  const handleConfirmBid = (amount: string) => {
+    setIsBidModalOpen(false);
+    showSuccessToast(`Successfully placed bid of ${amount} LFC`);
+  };
+
+  const handleConfirmCreate = (item: any) => {
+    setIsCreateModalOpen(false);
+    showSuccessToast(`Listing "${item.title}" created successfully`);
+  };
+
   const tabs = ['Auctions', 'Buy Now', 'Rentals', 'My Listings'];
 
   return (
-    <div className="pb-8 bg-gray-50 min-h-screen">
+    <div className="pb-24 bg-gray-50 min-h-screen relative">
+      {/* Success Toast */}
+      <div className={`fixed top-4 left-4 right-4 z-50 transition-all duration-300 ${
+        showToast ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+      }`}>
+        <div className="bg-lfc-green text-white px-4 py-3 rounded-2xl shadow-lg flex items-center space-x-3">
+          <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center shrink-0">
+            <Check size={16} />
+          </div>
+          <p className="font-bold text-sm flex-1">{toastMessage}</p>
+        </div>
+      </div>
+
+      {/* Floating Action Button for Create Auction */}
+      <button 
+        onClick={() => setIsCreateModalOpen(true)}
+        className="fixed bottom-20 right-5 z-40 w-14 h-14 bg-lfc-charcoal text-white rounded-full flex items-center justify-center shadow-elevated hover:bg-black transition-transform hover:scale-105 active:scale-95"
+      >
+        <Plus size={24} />
+      </button>
+
       {/* Glass Header */}
       <header className="px-5 pt-14 pb-2 glass sticky top-0 z-20">
         <div className="flex items-center justify-between mb-4">
@@ -98,6 +150,13 @@ export default function Marketplace() {
           isHot
           isFavorite={favorites.includes('1')}
           onToggleFavorite={() => toggleFavorite('1')}
+          onPlaceBid={() => handlePlaceBid({
+            id: '1',
+            title: "Signed 2005 Champions League Final Scarf",
+            currentBid: "4,500",
+            timeLeft: "00:04:12",
+            image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          })}
         />
         
         <AuctionCard 
@@ -111,6 +170,13 @@ export default function Marketplace() {
           bids={8}
           isFavorite={favorites.includes('2')}
           onToggleFavorite={() => toggleFavorite('2')}
+          onPlaceBid={() => handlePlaceBid({
+            id: '2',
+            title: "VIP Matchday Experience - Anfield Tunnel Access",
+            currentBid: "15,000",
+            timeLeft: "12:45:00",
+            image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          })}
         />
         
         <AuctionCard 
@@ -125,6 +191,13 @@ export default function Marketplace() {
           isHot
           isFavorite={favorites.includes('3')}
           onToggleFavorite={() => toggleFavorite('3')}
+          onPlaceBid={() => handlePlaceBid({
+            id: '3',
+            title: "Limited Edition 2024/25 Third Kit - Match Worn",
+            currentBid: "850",
+            timeLeft: "02:10:00",
+            image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          })}
         />
 
         <AuctionCard 
@@ -138,16 +211,36 @@ export default function Marketplace() {
           bids={15}
           isFavorite={favorites.includes('4')}
           onToggleFavorite={() => toggleFavorite('4')}
+          onPlaceBid={() => handlePlaceBid({
+            id: '4',
+            title: "Historic Programme: First European Cup Win 1977",
+            currentBid: "2,200",
+            timeLeft: "5d 12h",
+            image: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+          })}
         />
       </div>
 
       {/* Load More */}
-      <div className="px-5 mt-6">
+      <div className="px-5 mt-6 mb-8">
         <button className="w-full py-4 bg-white rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:border-gray-300 hover:bg-gray-50 transition-all flex items-center justify-center space-x-2">
           <span>Load More</span>
           <ChevronRight size={18} />
         </button>
       </div>
+
+      <BidModal 
+        isOpen={isBidModalOpen} 
+        onClose={() => setIsBidModalOpen(false)} 
+        onConfirm={handleConfirmBid}
+        item={selectedAuction}
+      />
+      
+      <CreateAuctionModal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+        onConfirm={handleConfirmCreate}
+      />
     </div>
   );
 }
@@ -172,7 +265,7 @@ function StatCard({ label, value, icon, color }: { label: string, value: string,
 }
 
 function AuctionCard({ 
-  id: _id, image, title, seller, sellerBadge, currentBid, timeLeft, bids, isHot = false, isFavorite, onToggleFavorite 
+  id: _id, image, title, seller, sellerBadge, currentBid, timeLeft, bids, isHot = false, isFavorite, onToggleFavorite, onPlaceBid 
 }: { 
   id: string;
   image: string; 
@@ -185,6 +278,7 @@ function AuctionCard({
   isHot?: boolean;
   isFavorite: boolean;
   onToggleFavorite: () => void;
+  onPlaceBid: () => void;
 }) {
   const badgeIcons = {
     verified: <Shield size={12} className="text-blue-500" />,
@@ -276,7 +370,10 @@ function AuctionCard({
       
       {/* Action Bar */}
       <div className="px-4 py-3 border-t border-gray-100 flex space-x-3">
-        <button className="flex-1 bg-lfc-charcoal text-white py-2.5 rounded-xl font-bold text-sm hover:bg-black transition-colors btn-press">
+        <button 
+          onClick={onPlaceBid}
+          className="flex-1 bg-lfc-charcoal text-white py-2.5 rounded-xl font-bold text-sm hover:bg-black transition-colors btn-press"
+        >
           Place Bid
         </button>
         <button className="px-4 py-2.5 border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-600 hover:border-gray-300 transition-colors">

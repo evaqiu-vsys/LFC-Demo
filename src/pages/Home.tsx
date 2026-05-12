@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Bell, ChevronRight, Gift, ShoppingBag, Trophy, ArrowUpRight, Sparkles, Ticket } from 'lucide-react';
+import { Bell, ChevronRight, Gift, ShoppingBag, Trophy, ArrowUpRight, Sparkles, Ticket, X } from 'lucide-react';
 
 export default function Home() {
   const [points] = useState(12450);
+  const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
 
   return (
     <div className="pb-8 bg-gray-50 min-h-screen">
@@ -136,13 +137,18 @@ export default function Home() {
         </div>
         
         <div className="group bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-500 border border-gray-100">
-          <div className="h-52 relative overflow-hidden">
+          <div className="h-52 relative overflow-hidden bg-gray-900">
+            {/* LFC Background Pattern */}
+            <div className="absolute inset-0 opacity-20">
+              <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" className="w-full h-full object-cover blur-sm mix-blend-overlay" alt="" />
+            </div>
+            {/* Main Image */}
             <img 
-              src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+              src="https://images.unsplash.com/photo-1553531384-cc64ac80f931?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
               alt="Travel Set" 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              className="absolute inset-0 w-full h-full object-cover mix-blend-normal opacity-80 group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             
             <div className="absolute top-4 left-4">
               <span className="px-3 py-1.5 bg-lfc-gold text-lfc-charcoal text-xs font-bold rounded-full uppercase tracking-wider shadow-lg">
@@ -151,21 +157,27 @@ export default function Home() {
             </div>
             
             <div className="absolute bottom-4 left-4 right-4">
-              <h3 className="font-bold text-xl text-white mb-1 drop-shadow-lg">Cultural Fusion Travel Set</h3>
-              <p className="text-white/80 text-sm">LFC x Japan Collaboration</p>
+              <h3 className="font-bold text-xl text-white mb-1 drop-shadow-lg">Ultimate LFC Travel Set</h3>
+              <p className="text-white/80 text-sm">Premium Suitcase & Scarf Bundle</p>
             </div>
           </div>
           
           <div className="p-5">
             <p className="text-gray-500 text-sm mb-4 leading-relaxed">
-              Exclusive luggage collection celebrating our Japanese fanbase. Premium materials with iconic LFC branding.
+              Travel like a champion. Get the official LFC branded luggage set paired with our classic matchday scarf.
             </p>
             <div className="flex justify-between items-center">
               <div>
-                <span className="text-xs text-gray-400 font-medium">Price</span>
-                <p className="font-bold text-2xl text-lfc-charcoal">$650</p>
+                <span className="text-xs text-gray-400 font-medium">Bundle Price</span>
+                <div className="flex items-baseline space-x-2">
+                  <p className="font-bold text-2xl text-lfc-charcoal">$60</p>
+                  <p className="text-xs text-gray-400 line-through">$85</p>
+                </div>
               </div>
-              <button className="bg-lfc-charcoal text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-black transition-colors shadow-lg btn-press flex items-center space-x-2">
+              <button 
+                onClick={() => setIsOfferModalOpen(true)}
+                className="bg-lfc-charcoal text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-black transition-colors shadow-lg btn-press flex items-center space-x-2"
+              >
                 <span>Details</span>
                 <ArrowUpRight size={16} />
               </button>
@@ -174,19 +186,23 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Quick Tickets Section */}
+      {/* Explore Rewards Section (Previously Upcoming Match) */}
       <div className="px-5 mt-8">
-        <h2 className="text-xl font-bold text-lfc-charcoal mb-4">Upcoming Match</h2>
+        <h2 className="text-xl font-bold text-lfc-charcoal mb-4">Explore Rewards</h2>
         <div className="bg-gradient-to-r from-lfc-red to-lfc-red-dark rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-10 w-24 h-24 bg-black/10 rounded-full translate-y-1/2"></div>
           <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <p className="text-white/70 text-xs font-medium mb-1">Sat, 18 May • Anfield</p>
-              <p className="font-bold text-lg">LFC vs Wolves</p>
-              <p className="text-white/60 text-sm mt-1">Premier League</p>
+            <div className="pr-4">
+              <div className="flex items-center space-x-1.5 mb-2">
+                <Sparkles size={14} className="text-lfc-gold" />
+                <p className="text-lfc-gold text-xs font-bold uppercase tracking-wider">Members Only</p>
+              </div>
+              <p className="font-bold text-lg leading-tight mb-1">Unlock Exclusive Stadium Experiences</p>
+              <p className="text-white/70 text-sm">Use points for matchday rewards</p>
             </div>
-            <button className="px-4 py-2 bg-white text-lfc-red font-bold text-sm rounded-xl btn-press">
-              Get Tickets
+            <button className="shrink-0 w-12 h-12 bg-white text-lfc-red rounded-full flex items-center justify-center shadow-lg btn-press hover:scale-105 transition-transform">
+              <ArrowUpRight size={20} />
             </button>
           </div>
         </div>
@@ -229,6 +245,88 @@ export default function Home() {
           />
         </div>
       </div>
+
+      {/* Offer Details Modal */}
+      {isOfferModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setIsOfferModalOpen(false)}>
+          <div 
+            className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="relative h-48 shrink-0 bg-gray-900">
+              <div className="absolute inset-0 opacity-20">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" className="w-full h-full object-cover blur-sm mix-blend-overlay" alt="" />
+              </div>
+              <img 
+                src="https://images.unsplash.com/photo-1553531384-cc64ac80f931?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Travel Set" 
+                className="absolute inset-0 w-full h-full object-cover mix-blend-normal opacity-80"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+              
+              <button 
+                onClick={() => setIsOfferModalOpen(false)}
+                className="absolute top-4 right-4 w-8 h-8 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center transition-colors border border-white/20"
+              >
+                <X size={16} className="text-white" />
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto">
+              <div className="flex items-center space-x-2 mb-3">
+                <span className="px-2 py-1 bg-lfc-gold/20 text-lfc-gold text-[10px] font-bold rounded-full uppercase tracking-wider">Limited Edition</span>
+                <span className="px-2 py-1 bg-lfc-red/10 text-lfc-red text-[10px] font-bold rounded-full uppercase tracking-wider">Bundle</span>
+              </div>
+              
+              <h3 className="text-2xl font-bold text-lfc-charcoal mb-4">Ultimate LFC Travel Set</h3>
+              
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start space-x-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                  <div className="mt-0.5"><ShoppingBag size={18} className="text-lfc-red" /></div>
+                  <div>
+                    <p className="font-bold text-sm text-lfc-charcoal">LFC Giftset ($60 value)</p>
+                    <p className="text-xs text-gray-500 mt-1">A physical set containing official branded luggage (suitcase) and a classic matchday scarf.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                  <div className="mt-0.5"><Ticket size={18} className="text-lfc-red" /></div>
+                  <div>
+                    <p className="font-bold text-sm text-lfc-charcoal">1-Year Premium Airport Lounge Access ($300 value)</p>
+                    <p className="text-xs text-gray-500 mt-1">This provides entry to premium lounges in 90% of airports globally.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                  <div className="mt-0.5"><Trophy size={18} className="text-lfc-red" /></div>
+                  <div>
+                    <p className="font-bold text-sm text-lfc-charcoal">1-Year Asian Vault Whisky Club ($100 value)</p>
+                    <p className="text-xs text-gray-500 mt-1">A one-year exclusive membership to the club.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3 bg-lfc-gold/10 p-3 rounded-xl border border-lfc-gold/20">
+                  <div className="mt-0.5"><Sparkles size={18} className="text-lfc-gold" /></div>
+                  <div>
+                    <p className="font-bold text-sm text-lfc-charcoal">Bonus Rewards</p>
+                    <p className="text-xs text-gray-600 mt-1">Includes <span className="font-bold text-lfc-red">3,000 points</span> and an instant upgrade to <span className="font-bold text-lfc-gold">Diamond membership</span>.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                <div>
+                  <p className="text-xs text-gray-400 font-medium">Total Value: $460</p>
+                  <p className="font-bold text-2xl text-lfc-charcoal">$60 <span className="text-sm font-medium text-gray-500 line-through ml-1">$85</span></p>
+                </div>
+                <button className="bg-lfc-red text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-lfc-red-dark transition-colors shadow-lg btn-press">
+                  Buy Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
