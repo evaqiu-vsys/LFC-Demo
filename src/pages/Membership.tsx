@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import { Check, Lock, Crown, Star, ChevronRight, Sparkles, Zap } from 'lucide-react';
+import { Check, Lock, Crown, Star, ChevronRight, Sparkles, Zap, Gift, Plane, GlassWater } from 'lucide-react';
 import ConfirmModal from '../components/ConfirmModal';
+import BenefitQRModal from '../components/BenefitQRModal';
+import BenefitAddressModal from '../components/BenefitAddressModal';
 
 export default function Membership() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpgraded, setIsUpgraded] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [selectedBenefitTitle, setSelectedBenefitTitle] = useState('');
 
   const handleUpgrade = () => {
     setIsUpgraded(true);
@@ -21,10 +26,10 @@ export default function Membership() {
     { name: 'Diamond Elite', level: 4, color: 'bg-lfc-gold' },
   ];
 
-  const currentTierIndex = isUpgraded ? 2 : 1;
+  const currentTierIndex = isUpgraded ? 3 : 2;
 
   return (
-    <div className="pb-8 bg-gray-50 min-h-screen relative">
+    <div className="pb-28 bg-gray-50 min-h-screen relative">
       {/* Celebration Overlay */}
       {showCelebration && (
         <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center">
@@ -33,7 +38,7 @@ export default function Membership() {
             <div className="w-24 h-24 bg-lfc-gold rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl animate-bounce">
               <Crown size={48} className="text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-lfc-charcoal mb-2">Welcome to Premium!</h2>
+            <h2 className="text-3xl font-bold text-lfc-charcoal mb-2">Welcome to Diamond Elite!</h2>
             <p className="text-gray-600">Your membership has been upgraded</p>
           </div>
         </div>
@@ -116,7 +121,7 @@ export default function Membership() {
                   </div>
                   
                   <h3 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
-                    {isUpgraded ? 'Premium Red' : 'Anfield Silver'}
+                    {isUpgraded ? 'Diamond Elite' : 'Premium Red'}
                   </h3>
                   
                   <div className="flex items-center space-x-4 mt-4">
@@ -138,23 +143,57 @@ export default function Membership() {
             <div className="px-6 pb-6 pt-2">
               <div className="flex justify-between text-xs mb-2">
                 <span className="text-gray-400 font-medium">
-                  {isUpgraded ? '20,000' : '12,450'} pts
+                  {isUpgraded ? '50,000' : '12,450'} pts
                 </span>
                 <span className="text-lfc-gold font-bold">
-                  {isUpgraded ? '50,000' : '20,000'} pts
+                  {isUpgraded ? 'Max' : '50,000 pts'}
                 </span>
               </div>
               <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
                 <div 
                   className="bg-gradient-to-r from-lfc-gold to-lfc-gold-light h-2 rounded-full transition-all duration-1000"
-                  style={{ width: isUpgraded ? '0%' : '62%' }}
+                  style={{ width: isUpgraded ? '100%' : '25%' }}
                 ></div>
               </div>
               <p className="text-xs text-gray-500 mt-2 text-right">
-                {isUpgraded ? '30,000 pts to Diamond Elite' : '7,550 pts to Premium Red'}
+                {isUpgraded ? 'Max tier reached' : '37,550 pts to Diamond Elite'}
               </p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Premium Benefits - Always shown as they are at least Premium Red */}
+      <div className="px-5 mt-8 mb-6">
+        <h2 className="text-lg font-bold text-lfc-charcoal mb-4">Your Premium Benefits</h2>
+        <div className="space-y-3">
+          <BenefitCard 
+            icon={<Plane size={20} className="text-lfc-charcoal" />}
+            title="1-Year Premium Airport Lounge Access"
+            desc="Provides entry to premium lounges in 90% of airports globally."
+            onUse={() => {
+              setSelectedBenefitTitle('1-Year Premium Airport Lounge Access');
+              setIsQRModalOpen(true);
+            }}
+          />
+          <BenefitCard 
+            icon={<GlassWater size={20} className="text-lfc-charcoal" />}
+            title="1-Year Asian Vault Whisky Club Access"
+            desc="A one-year exclusive membership to the club."
+            onUse={() => {
+              setSelectedBenefitTitle('1-Year Asian Vault Whisky Club Access');
+              setIsQRModalOpen(true);
+            }}
+          />
+          <BenefitCard 
+            icon={<Gift size={20} className="text-lfc-charcoal" />}
+            title="LFC Giftset (Luggage + Scarf)"
+            desc="A physical set containing official branded luggage (suitcase) and a classic matchday scarf."
+            onUse={() => {
+              setSelectedBenefitTitle('LFC Giftset');
+              setIsAddressModalOpen(true);
+            }}
+          />
         </div>
       </div>
 
@@ -179,7 +218,7 @@ export default function Membership() {
           <BenefitRow title="Exclusive Events" current={isUpgraded} next={true} />
           <BenefitRow title="Anfield Lounge" current={isUpgraded} next={true} />
           <BenefitRow title="Priority Support" current={isUpgraded} next={true} />
-          <BenefitRow title="Digital Badges" current={isUpgraded ? "Premium" : "Standard"} next={isUpgraded ? "Elite" : "Premium"} isLast />
+          <BenefitRow title="Digital Badges" current={isUpgraded ? "Elite" : "Premium"} next={isUpgraded ? "Max" : "Elite"} isLast />
         </div>
       </div>
 
@@ -198,7 +237,7 @@ export default function Membership() {
                     <Zap size={16} className="text-lfc-gold" />
                     <span className="text-lfc-gold text-xs font-bold uppercase tracking-wider">Upgrade Available</span>
                   </div>
-                  <h3 className="font-bold text-xl">Unlock Premium Red</h3>
+                  <h3 className="font-bold text-xl">Unlock Diamond Elite</h3>
                 </div>
                 <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                   <Crown size={24} className="text-white" />
@@ -225,9 +264,9 @@ export default function Membership() {
         </div>
       )}
 
-      {/* Already Premium State */}
+      {/* Already Premium State & Benefits */}
       {isUpgraded && (
-        <div className="px-5 mt-6">
+        <div className="px-5 mt-6 space-y-6">
           <div className="bg-gradient-to-br from-lfc-gold to-yellow-500 rounded-2xl p-6 text-lfc-charcoal shadow-elevated relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full -translate-y-1/2 translate-x-1/2"></div>
             
@@ -236,7 +275,7 @@ export default function Membership() {
                 <Sparkles size={32} className="text-lfc-gold" />
               </div>
               <div>
-                <h3 className="font-bold text-xl mb-1">You're Premium!</h3>
+                <h3 className="font-bold text-xl mb-1">You're Diamond Elite!</h3>
                 <p className="text-lfc-charcoal/70 text-sm">Enjoy all exclusive benefits</p>
               </div>
             </div>
@@ -249,9 +288,44 @@ export default function Membership() {
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleUpgrade}
         title="Confirm Upgrade"
-        description="Upgrade to Premium Red for 7,550 LFC points. Unlock exclusive benefits and experiences."
-        pointsAmount="7,550"
+        description="Upgrade to Diamond Elite for 37,550 LFC points. Unlock exclusive benefits and experiences."
+        pointsAmount="37,550"
       />
+
+      <BenefitQRModal 
+        isOpen={isQRModalOpen}
+        onClose={() => setIsQRModalOpen(false)}
+        title={selectedBenefitTitle}
+      />
+
+      <BenefitAddressModal 
+        isOpen={isAddressModalOpen}
+        onClose={() => setIsAddressModalOpen(false)}
+        title={selectedBenefitTitle}
+      />
+    </div>
+  );
+}
+
+function BenefitCard({ icon, title, desc, onUse }: { icon: React.ReactNode, title: string, desc: string, onUse: () => void }) {
+  return (
+    <div className="bg-white rounded-2xl p-4 shadow-card border border-gray-100 flex flex-col justify-between">
+      <div className="flex items-start space-x-3 mb-4">
+        <div className="w-12 h-12 rounded-xl bg-lfc-gold/10 flex items-center justify-center shrink-0">
+          {icon}
+        </div>
+        <div>
+          <h4 className="font-bold text-sm text-lfc-charcoal leading-tight mb-1">{title}</h4>
+          <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+        </div>
+      </div>
+      <button 
+        onClick={onUse}
+        className="w-full py-2.5 rounded-xl text-sm font-bold text-lfc-charcoal bg-gray-100 hover:bg-gray-200 transition-colors btn-press flex items-center justify-center space-x-1"
+      >
+        <span>Access Benefit</span>
+        <ChevronRight size={16} />
+      </button>
     </div>
   );
 }

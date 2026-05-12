@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Upload, PlusCircle, CheckCircle2 } from 'lucide-react';
+import { X, PlusCircle, CheckCircle2 } from 'lucide-react';
 
 interface CreateAuctionModalProps {
   isOpen: boolean;
@@ -11,18 +11,22 @@ export default function CreateAuctionModal({ isOpen, onClose, onConfirm }: Creat
   const [isAnimating, setIsAnimating] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
-  const [title, setTitle] = useState('');
+  const userAssets = [
+    { id: '1', title: 'Vintage Scarf NFT', type: 'Collectible', image: 'https://images.unsplash.com/photo-1629872430082-93d8912beccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' },
+    { id: '2', title: 'LFC vs Man Utd Ticket', type: 'Ticket', image: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' },
+    { id: '3', title: 'Signed Match Ball', type: 'Collectible', image: 'https://images.unsplash.com/photo-1614632537423-1e6c2e7e0aab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' }
+  ];
+
+  const [selectedAssetId, setSelectedAssetId] = useState('');
   const [price, setPrice] = useState('');
   const [duration, setDuration] = useState('24h');
-  const [assetType, setAssetType] = useState('Collectible');
 
   useEffect(() => {
     if (isOpen) {
       setIsAnimating(true);
-      setTitle('');
+      setSelectedAssetId('');
       setPrice('');
       setDuration('24h');
-      setAssetType('Collectible');
       setTimeout(() => setShowContent(true), 50);
     } else {
       setShowContent(false);
@@ -33,24 +37,26 @@ export default function CreateAuctionModal({ isOpen, onClose, onConfirm }: Creat
   if (!isAnimating && !isOpen) return null;
 
   const handleConfirm = () => {
-    if (!title || !price) return;
+    if (!selectedAssetId || !price) return;
+    
+    const asset = userAssets.find(a => a.id === selectedAssetId);
     
     onConfirm({
       id: Date.now().toString(),
-      title,
+      title: asset?.title || 'Unknown',
       currentBid: price,
       timeLeft: duration,
-      seller: 'Alex_YNWA',
+      seller: 'Eva',
       sellerBadge: 'verified',
       bids: 0,
-      image: 'https://images.unsplash.com/photo-1629872430082-93d8912beccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image: asset?.image || 'https://images.unsplash.com/photo-1629872430082-93d8912beccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
       isHot: true
     });
   };
 
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${
+      className={`fixed inset-0 z-[60] flex items-center justify-center p-4 transition-all duration-300 ${
         showContent ? 'bg-black/60 backdrop-blur-sm' : 'bg-black/0'
       }`}
       onClick={onClose}
@@ -83,25 +89,33 @@ export default function CreateAuctionModal({ isOpen, onClose, onConfirm }: Creat
         
         {/* Content */}
         <div className="p-6 overflow-y-auto space-y-6">
-          {/* Image Upload Area */}
-          <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer group">
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-3 group-hover:scale-110 transition-transform">
-              <Upload size={20} className="text-lfc-red" />
-            </div>
-            <p className="text-sm font-bold text-lfc-charcoal">Upload Asset Image</p>
-            <p className="text-xs text-gray-500 mt-1">JPG, PNG, GIF up to 10MB</p>
-          </div>
-          
-          {/* Form Fields */}
+          {/* Asset Selection */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Item Title</label>
-            <input 
-              type="text" 
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Signed Match Ball"
-              className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-sm font-bold text-lfc-charcoal focus:outline-none focus:border-lfc-red focus:ring-4 focus:ring-lfc-red/10 transition-all"
-            />
+            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Select Asset from Wallet</label>
+            <div className="grid grid-cols-1 gap-3">
+              {userAssets.map(asset => (
+                <div 
+                  key={asset.id}
+                  onClick={() => setSelectedAssetId(asset.id)}
+                  className={`flex items-center p-3 rounded-xl border-2 transition-all cursor-pointer ${
+                    selectedAssetId === asset.id 
+                      ? 'border-lfc-red bg-lfc-red/5' 
+                      : 'border-gray-200 bg-white hover:border-gray-300'
+                  }`}
+                >
+                  <img src={asset.image} alt={asset.title} className="w-12 h-12 rounded-lg object-cover bg-gray-100" />
+                  <div className="ml-3 flex-1">
+                    <p className="font-bold text-sm text-lfc-charcoal">{asset.title}</p>
+                    <p className="text-xs text-gray-500">{asset.type}</p>
+                  </div>
+                  {selectedAssetId === asset.id && (
+                    <div className="w-6 h-6 rounded-full bg-lfc-red flex items-center justify-center">
+                      <CheckCircle2 size={12} className="text-white" />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -132,25 +146,6 @@ export default function CreateAuctionModal({ isOpen, onClose, onConfirm }: Creat
               </select>
             </div>
           </div>
-          
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Asset Type</label>
-            <div className="flex space-x-2">
-              {['Collectible', 'Ticket', 'Merch'].map(type => (
-                <button
-                  key={type}
-                  onClick={() => setAssetType(type)}
-                  className={`flex-1 py-3 rounded-xl text-xs font-bold transition-all ${
-                    assetType === type
-                      ? 'bg-lfc-charcoal text-white shadow-md'
-                      : 'bg-white border-2 border-gray-200 text-gray-500 hover:border-gray-300'
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-          </div>
 
         </div>
         
@@ -158,7 +153,7 @@ export default function CreateAuctionModal({ isOpen, onClose, onConfirm }: Creat
         <div className="px-6 pb-6 pt-2 bg-white">
           <button 
             onClick={handleConfirm}
-            disabled={!title || !price}
+            disabled={!selectedAssetId || !price}
             className="w-full py-4 rounded-xl font-bold text-sm text-white shadow-lg btn-press flex items-center justify-center space-x-2 bg-gradient-to-r from-lfc-red to-lfc-red-dark hover:from-red-700 hover:to-red-800 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span>Create Listing</span>

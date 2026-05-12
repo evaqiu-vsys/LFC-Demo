@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Copy, QrCode, Settings, Package, ChevronRight, Wallet, Image as ImageIcon, Award, Shield, ExternalLink, Eye, EyeOff } from 'lucide-react';
+import OrderTrackingModal from '../components/OrderTrackingModal';
 
 export default function My() {
   const [showBalance, setShowBalance] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [isTrackingModalOpen, setIsTrackingModalOpen] = useState(false);
 
   const handleCopy = () => {
     setCopied(true);
@@ -115,8 +117,8 @@ export default function My() {
             subtitle="Premium Red"
             count={1} 
             icon={<Shield size={20} />}
-            color="bg-gradient-to-br from-lfc-gold to-yellow-500"
-            textColor="text-lfc-charcoal"
+            color="bg-gradient-to-br from-lfc-red to-lfc-red-dark"
+            textColor="text-white"
           />
           <AssetCategory 
             title="Benefits" 
@@ -191,6 +193,7 @@ export default function My() {
           desc="Track physical merchandise deliveries"
           badge="1 Pending"
           badgeColor="bg-amber-100 text-amber-700"
+          onClick={() => setIsTrackingModalOpen(true)}
         />
         <UtilityItem 
           icon={<ExternalLink size={20} />} 
@@ -209,6 +212,11 @@ export default function My() {
           </div>
         </div>
       </div>
+
+      <OrderTrackingModal 
+        isOpen={isTrackingModalOpen}
+        onClose={() => setIsTrackingModalOpen(false)}
+      />
     </div>
   );
 }
@@ -272,15 +280,19 @@ function NFTCard({ image, name, rarity }: { image: string, name: string, rarity:
   );
 }
 
-function UtilityItem({ icon, title, desc, badge, badgeColor }: { 
+function UtilityItem({ icon, title, desc, badge, badgeColor, onClick }: { 
   icon: React.ReactNode; 
   title: string; 
   desc: string;
   badge?: string;
   badgeColor?: string;
+  onClick?: () => void;
 }) {
   return (
-    <button className="w-full bg-white p-4 rounded-2xl border border-gray-100 shadow-card hover:shadow-card-hover transition-all duration-300 flex items-center text-left group">
+    <button 
+      onClick={onClick}
+      className="w-full bg-white p-4 rounded-2xl border border-gray-100 shadow-card hover:shadow-card-hover transition-all duration-300 flex items-center text-left group"
+    >
       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-100 to-gray-50 text-lfc-charcoal flex items-center justify-center shrink-0 group-hover:from-lfc-red/10 group-hover:to-lfc-red/5 group-hover:text-lfc-red transition-colors">
         {icon}
       </div>

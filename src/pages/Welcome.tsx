@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { Shield, Zap, Award } from 'lucide-react';
 
+import logoImg from '../assets/lfc-logo.png';
+
 export default function Welcome() {
   const navigate = useNavigate();
 
@@ -33,20 +35,22 @@ export default function Welcome() {
           <div className="relative mb-6">
             {/* Glow effect behind logo */}
             <div className="absolute inset-0 bg-white/20 blur-3xl rounded-full scale-150"></div>
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" 
-              alt="LFC Logo" 
-              className="h-28 w-auto relative z-10 drop-shadow-2xl animate-float"
-            />
+            <div className="w-32 h-32 bg-white rounded-2xl flex items-center justify-center shadow-2xl relative z-10 p-2 mx-auto">
+              <img 
+                src={logoImg} 
+                alt="LFC Travel Loyalty Logo" 
+                className="w-full h-full object-contain relative z-10"
+              />
+            </div>
           </div>
           
-          <h1 className="text-5xl font-extrabold text-white text-center tracking-tight mb-2 drop-shadow-lg">
-            Liverpool FC
+          <h1 className="text-4xl font-extrabold text-white text-center tracking-tight mb-2 drop-shadow-lg">
+            LFC Travel
           </h1>
           <div className="flex items-center space-x-2 mb-3">
             <span className="h-px w-8 bg-lfc-gold/60"></span>
             <p className="text-lfc-gold font-semibold tracking-[0.3em] uppercase text-xs text-center">
-              Digital Membership
+              Loyalty
             </p>
             <span className="h-px w-8 bg-lfc-gold/60"></span>
           </div>

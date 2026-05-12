@@ -1,23 +1,36 @@
 import { useState } from 'react';
-import { Bell, ChevronRight, Gift, ShoppingBag, Trophy, ArrowUpRight, Sparkles, Ticket, X } from 'lucide-react';
+import { Bell, ChevronRight, Gift, ShoppingBag, Trophy, ArrowUpRight, Sparkles, Ticket, X, CheckCircle2 } from 'lucide-react';
+import lfcTravelSetImg from '../assets/lfc-travel-set.png';
+import CheckoutModal from '../components/CheckoutModal';
+
+import logoImg from '../assets/lfc-logo.png';
 
 export default function Home() {
   const [points] = useState(12450);
   const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+  const [isCheckoutConfirmOpen, setIsCheckoutConfirmOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const handleCheckoutConfirm = () => {
+    setIsCheckoutConfirmOpen(false);
+    setIsOfferModalOpen(false);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
 
   return (
     <div className="pb-8 bg-gray-50 min-h-screen">
       {/* Glass Header */}
       <header className="px-5 pt-14 pb-4 flex justify-between items-center glass sticky top-0 z-20 border-b border-gray-200/50">
         <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 bg-lfc-red rounded-lg flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg p-1 overflow-hidden">
             <img 
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" 
-              alt="LFC" 
-              className="h-6 w-auto brightness-0 invert"
+              src={logoImg}
+              alt="LFC Travel Loyalty" 
+              className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-bold text-lfc-charcoal text-lg tracking-tight">LFC</span>
+          <span className="font-bold text-lfc-charcoal text-lg tracking-tight leading-tight whitespace-nowrap">LFC Travel<br/><span className="text-sm text-lfc-red">Loyalty</span></span>
         </div>
         
         <button className="relative p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors group">
@@ -71,13 +84,13 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs uppercase tracking-wider font-medium">Welcome back</p>
-                  <p className="font-bold text-xl text-white tracking-tight">Alex_YNWA</p>
+                  <p className="font-bold text-xl text-white tracking-tight">Eva</p>
                 </div>
               </div>
               
-              <div className="px-3 py-1.5 bg-lfc-gold/20 backdrop-blur-sm rounded-full border border-lfc-gold/30">
-                <span className="text-lfc-gold text-xs font-bold uppercase tracking-wider">
-                  Premium
+              <div className="px-3 py-1.5 bg-lfc-red/20 backdrop-blur-sm rounded-full border border-lfc-red/30">
+                <span className="text-lfc-red text-xs font-bold uppercase tracking-wider">
+                  Premium Red
                 </span>
               </div>
             </div>
@@ -92,10 +105,6 @@ export default function Home() {
                 <span className="text-lfc-gold ml-2 font-bold text-lg">LFC</span>
               </div>
               <div className="flex items-center mt-2 space-x-2">
-                <div className="flex items-center space-x-1 px-2 py-0.5 bg-lfc-green/20 rounded-full">
-                  <ArrowUpRight size={12} className="text-lfc-green" />
-                  <span className="text-lfc-green text-xs font-bold">+12% this month</span>
-                </div>
               </div>
             </div>
           </div>
@@ -144,7 +153,7 @@ export default function Home() {
             </div>
             {/* Main Image */}
             <img 
-              src="https://images.unsplash.com/photo-1553531384-cc64ac80f931?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+              src={lfcTravelSetImg} 
               alt="Travel Set" 
               className="absolute inset-0 w-full h-full object-cover mix-blend-normal opacity-80 group-hover:scale-105 transition-transform duration-700"
             />
@@ -170,8 +179,8 @@ export default function Home() {
               <div>
                 <span className="text-xs text-gray-400 font-medium">Bundle Price</span>
                 <div className="flex items-baseline space-x-2">
-                  <p className="font-bold text-2xl text-lfc-charcoal">$60</p>
-                  <p className="text-xs text-gray-400 line-through">$85</p>
+                  <p className="font-bold text-2xl text-lfc-charcoal">$600</p>
+                  <p className="text-xs text-gray-400 line-through">$850</p>
                 </div>
               </div>
               <button 
@@ -248,7 +257,7 @@ export default function Home() {
 
       {/* Offer Details Modal */}
       {isOfferModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setIsOfferModalOpen(false)}>
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setIsOfferModalOpen(false)}>
           <div 
             className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col"
             onClick={e => e.stopPropagation()}
@@ -258,7 +267,7 @@ export default function Home() {
                 <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png" className="w-full h-full object-cover blur-sm mix-blend-overlay" alt="" />
               </div>
               <img 
-                src="https://images.unsplash.com/photo-1553531384-cc64ac80f931?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                src={lfcTravelSetImg} 
                 alt="Travel Set" 
                 className="absolute inset-0 w-full h-full object-cover mix-blend-normal opacity-80"
               />
@@ -284,7 +293,7 @@ export default function Home() {
                 <div className="flex items-start space-x-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
                   <div className="mt-0.5"><ShoppingBag size={18} className="text-lfc-red" /></div>
                   <div>
-                    <p className="font-bold text-sm text-lfc-charcoal">LFC Giftset ($60 value)</p>
+                    <p className="font-bold text-sm text-lfc-charcoal">LFC Giftset ($600 value)</p>
                     <p className="text-xs text-gray-500 mt-1">A physical set containing official branded luggage (suitcase) and a classic matchday scarf.</p>
                   </div>
                 </div>
@@ -316,10 +325,13 @@ export default function Home() {
               
               <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                 <div>
-                  <p className="text-xs text-gray-400 font-medium">Total Value: $460</p>
-                  <p className="font-bold text-2xl text-lfc-charcoal">$60 <span className="text-sm font-medium text-gray-500 line-through ml-1">$85</span></p>
+                  <p className="text-xs text-gray-400 font-medium">Total Value: $850</p>
+                  <p className="font-bold text-2xl text-lfc-charcoal">$600 <span className="text-sm font-medium text-gray-500 line-through ml-1">$850</span></p>
                 </div>
-                <button className="bg-lfc-red text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-lfc-red-dark transition-colors shadow-lg btn-press">
+                <button 
+                  onClick={() => setIsCheckoutConfirmOpen(true)}
+                  className="bg-lfc-red text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-lfc-red-dark transition-colors shadow-lg btn-press"
+                >
                   Buy Now
                 </button>
               </div>
@@ -327,6 +339,27 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={isCheckoutConfirmOpen}
+        onClose={() => setIsCheckoutConfirmOpen(false)}
+        onConfirm={handleCheckoutConfirm}
+      />
+
+      {/* Success Toast */}
+      <div 
+        className={`fixed top-20 left-1/2 -translate-x-1/2 z-[80] transition-all duration-300 ${
+          showToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+        }`}
+      >
+        <div className="bg-lfc-charcoal text-white px-6 py-3 rounded-full shadow-2xl flex items-center space-x-3">
+          <div className="w-6 h-6 bg-lfc-green rounded-full flex items-center justify-center">
+            <CheckCircle2 size={14} className="text-white" />
+          </div>
+          <span className="font-bold text-sm">Purchase Successful!</span>
+        </div>
+      </div>
     </div>
   );
 }

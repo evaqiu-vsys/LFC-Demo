@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Clock, Filter, Flame, Search, Heart, TrendingUp, Shield, Star, ChevronRight, Plus } from 'lucide-react';
 import BidModal from '../components/BidModal';
 import CreateAuctionModal from '../components/CreateAuctionModal';
+import AuctionDetailModal from '../components/AuctionDetailModal';
 
 export default function Marketplace() {
   const [activeTab, setActiveTab] = useState('Auctions');
@@ -10,6 +11,7 @@ export default function Marketplace() {
   // Modal states
   const [isBidModalOpen, setIsBidModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedAuction, setSelectedAuction] = useState<any>(null);
   
   // Toast state
@@ -31,6 +33,11 @@ export default function Marketplace() {
   const handlePlaceBid = (item: any) => {
     setSelectedAuction(item);
     setIsBidModalOpen(true);
+  };
+
+  const handleShowDetails = (item: any) => {
+    setSelectedAuction(item);
+    setIsDetailModalOpen(true);
   };
 
   const handleConfirmBid = (amount: string) => {
@@ -155,7 +162,22 @@ export default function Marketplace() {
             title: "Signed 2005 Champions League Final Scarf",
             currentBid: "4,500",
             timeLeft: "00:04:12",
-            image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+            image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            seller: "Kopite99",
+            sellerBadge: "verified",
+            bids: 24,
+            isHot: true
+          })}
+          onShowDetails={() => handleShowDetails({
+            id: '1',
+            title: "Signed 2005 Champions League Final Scarf",
+            currentBid: "4,500",
+            timeLeft: "00:04:12",
+            image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            seller: "Kopite99",
+            sellerBadge: "verified",
+            bids: 24,
+            isHot: true
           })}
         />
         
@@ -175,7 +197,20 @@ export default function Marketplace() {
             title: "VIP Matchday Experience - Anfield Tunnel Access",
             currentBid: "15,000",
             timeLeft: "12:45:00",
-            image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+            image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            seller: "OfficialLFC",
+            sellerBadge: "official",
+            bids: 8
+          })}
+          onShowDetails={() => handleShowDetails({
+            id: '2',
+            title: "VIP Matchday Experience - Anfield Tunnel Access",
+            currentBid: "15,000",
+            timeLeft: "12:45:00",
+            image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            seller: "OfficialLFC",
+            sellerBadge: "official",
+            bids: 8
           })}
         />
         
@@ -196,7 +231,22 @@ export default function Marketplace() {
             title: "Limited Edition 2024/25 Third Kit - Match Worn",
             currentBid: "850",
             timeLeft: "02:10:00",
-            image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+            image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            seller: "RedFanatic",
+            sellerBadge: "trusted",
+            bids: 42,
+            isHot: true
+          })}
+          onShowDetails={() => handleShowDetails({
+            id: '3',
+            title: "Limited Edition 2024/25 Third Kit - Match Worn",
+            currentBid: "850",
+            timeLeft: "02:10:00",
+            image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            seller: "RedFanatic",
+            sellerBadge: "trusted",
+            bids: 42,
+            isHot: true
           })}
         />
 
@@ -216,7 +266,20 @@ export default function Marketplace() {
             title: "Historic Programme: First European Cup Win 1977",
             currentBid: "2,200",
             timeLeft: "5d 12h",
-            image: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+            image: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            seller: "VintageCollector",
+            sellerBadge: "verified",
+            bids: 15
+          })}
+          onShowDetails={() => handleShowDetails({
+            id: '4',
+            title: "Historic Programme: First European Cup Win 1977",
+            currentBid: "2,200",
+            timeLeft: "5d 12h",
+            image: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            seller: "VintageCollector",
+            sellerBadge: "verified",
+            bids: 15
           })}
         />
       </div>
@@ -240,6 +303,13 @@ export default function Marketplace() {
         isOpen={isCreateModalOpen} 
         onClose={() => setIsCreateModalOpen(false)} 
         onConfirm={handleConfirmCreate}
+      />
+      
+      <AuctionDetailModal 
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        item={selectedAuction}
+        onPlaceBidSuccess={handleConfirmBid}
       />
     </div>
   );
@@ -265,7 +335,7 @@ function StatCard({ label, value, icon, color }: { label: string, value: string,
 }
 
 function AuctionCard({ 
-  id: _id, image, title, seller, sellerBadge, currentBid, timeLeft, bids, isHot = false, isFavorite, onToggleFavorite, onPlaceBid 
+  id: _id, image, title, seller, sellerBadge, currentBid, timeLeft, bids, isHot = false, isFavorite, onToggleFavorite, onPlaceBid, onShowDetails
 }: { 
   id: string;
   image: string; 
@@ -279,6 +349,7 @@ function AuctionCard({
   isFavorite: boolean;
   onToggleFavorite: () => void;
   onPlaceBid: () => void;
+  onShowDetails?: () => void;
 }) {
   const badgeIcons = {
     verified: <Shield size={12} className="text-blue-500" />,
@@ -372,11 +443,14 @@ function AuctionCard({
       <div className="px-4 py-3 border-t border-gray-100 flex space-x-3">
         <button 
           onClick={onPlaceBid}
-          className="flex-1 bg-lfc-charcoal text-white py-2.5 rounded-xl font-bold text-sm hover:bg-black transition-colors btn-press"
+          className="flex-1 bg-lfc-red text-white py-2 rounded-xl font-bold text-sm hover:opacity-90 transition-colors btn-press"
         >
-          Place Bid
+          Bid
         </button>
-        <button className="px-4 py-2.5 border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-600 hover:border-gray-300 transition-colors">
+        <button 
+          onClick={onShowDetails}
+          className="flex-1 py-2 border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-600 hover:border-gray-300 hover:bg-gray-50 transition-colors"
+        >
           Details
         </button>
       </div>

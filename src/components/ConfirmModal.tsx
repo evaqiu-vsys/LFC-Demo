@@ -8,10 +8,11 @@ interface ConfirmModalProps {
   title: string;
   description: string;
   pointsAmount?: string;
+  currency?: string;
   isDanger?: boolean;
 }
 
-export default function ConfirmModal({ isOpen, onClose, onConfirm, title, description, pointsAmount, isDanger = false }: ConfirmModalProps) {
+export default function ConfirmModal({ isOpen, onClose, onConfirm, title, description, pointsAmount, currency = 'LFC', isDanger = false }: ConfirmModalProps) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
@@ -30,7 +31,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, descri
 
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${
+      className={`fixed inset-0 z-[60] flex items-center justify-center p-4 transition-all duration-300 ${
         showContent ? 'bg-black/60 backdrop-blur-sm' : 'bg-black/0'
       }`}
       onClick={onClose}
@@ -77,12 +78,12 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, descri
             <div className="bg-gray-50 rounded-2xl p-4 mb-6 border border-gray-100">
               <div className="flex justify-between items-center mb-3">
                 <span className="text-sm font-medium text-gray-500">Amount</span>
-                <span className="font-bold text-xl text-lfc-charcoal">{pointsAmount} <span className="text-sm font-semibold text-gray-400">LFC</span></span>
+                <span className="font-bold text-xl text-lfc-charcoal">{pointsAmount} <span className="text-sm font-semibold text-gray-400">{currency}</span></span>
               </div>
               <div className="h-px bg-gray-200 mb-3"></div>
               <div className="flex justify-between items-center">
                 <span className="text-sm font-bold text-gray-700">Total</span>
-                <span className="font-bold text-2xl text-lfc-charcoal">{pointsAmount} <span className="text-base font-semibold text-gray-400">LFC</span></span>
+                <span className="font-bold text-2xl text-lfc-charcoal">{pointsAmount} <span className="text-base font-semibold text-gray-400">{currency}</span></span>
               </div>
             </div>
           )}

@@ -1,15 +1,17 @@
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, Trophy, ShoppingBag, User } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Layout() {
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const mainRef = React.useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      if (!mainRef.current) return;
+      const currentScrollY = mainRef.current.scrollTop;
       
       // Hide nav when scrolling down, show when scrolling up
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
@@ -21,13 +23,16 @@ export default function Layout() {
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const mainElement = mainRef.current;
+    if (mainElement) {
+      mainElement.addEventListener('scroll', handleScroll, { passive: true });
+      return () => mainElement.removeEventListener('scroll', handleScroll);
+    }
   }, [lastScrollY]);
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
-      <main className="flex-1 overflow-y-auto scrollbar-hide">
+      <main ref={mainRef} className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="max-w-md mx-auto min-h-full bg-gray-50 relative">
           <Outlet />
         </div>
@@ -35,7 +40,7 @@ export default function Layout() {
       
       {/* Floating Navigation Bar */}
       <nav 
-        className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out ${
+        className={`fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300 ease-out ${
           isVisible ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
