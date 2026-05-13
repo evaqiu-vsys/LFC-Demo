@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Clock, Filter, Flame, Search, Heart, TrendingUp, Shield, Star, ChevronRight, Plus } from 'lucide-react';
+import { Clock, Filter, Flame, Search, Heart, TrendingUp, Shield, Star, ChevronRight, Plus, MapPin } from 'lucide-react';
 import BidModal from '../components/BidModal';
 import CreateAuctionModal from '../components/CreateAuctionModal';
 import AuctionDetailModal from '../components/AuctionDetailModal';
@@ -7,6 +7,12 @@ import AuctionDetailModal from '../components/AuctionDetailModal';
 export default function Marketplace() {
   const [activeTab, setActiveTab] = useState('Auctions');
   const [favorites, setFavorites] = useState<string[]>([]);
+  
+  // Search and Filter State
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCountry, setActiveCountry] = useState('All');
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   
   // Modal states
   const [isBidModalOpen, setIsBidModalOpen] = useState(false);
@@ -42,7 +48,7 @@ export default function Marketplace() {
 
   const handleConfirmBid = (amount: string) => {
     setIsBidModalOpen(false);
-    showSuccessToast(`Successfully placed bid of ${amount} LFC`);
+    showSuccessToast(`Successfully placed bid of ${amount} LFCP`);
   };
 
   const handleConfirmCreate = (item: any) => {
@@ -83,9 +89,6 @@ export default function Marketplace() {
             </div>
             <h1 className="text-2xl font-bold text-lfc-charcoal">Marketplace</h1>
           </div>
-          <button className="p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors">
-            <Search size={20} className="text-gray-600" />
-          </button>
         </div>
         
         {/* Tabs - Pill Style */}
@@ -114,32 +117,84 @@ export default function Marketplace() {
         </div>
       </div>
 
-      {/* Filter Bar */}
+      {/* Search and Filters */}
       <div className="px-5 mt-4">
-        <div className="flex justify-between items-center bg-white rounded-xl p-3 shadow-card border border-gray-100">
-          <span className="text-sm font-semibold text-gray-600">6 items found</span>
-          <button className="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-            <Filter size={16} className="text-gray-600" />
-            <span className="text-sm font-semibold text-gray-700">Filter</span>
+        {/* Search Input & Filter Toggle */}
+        <div className="flex space-x-3">
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+              <Search size={18} className="text-gray-400" />
+            </div>
+            <input
+              type="text"
+              className="w-full bg-white border border-gray-200 text-gray-800 rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-lfc-red/50 focus:border-lfc-red transition-all shadow-sm"
+              placeholder="Search marketplace..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <button 
+            onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+            className={`px-4 py-3 rounded-xl flex items-center justify-center transition-all shadow-sm border ${
+              isFiltersOpen || activeCategory !== 'All' || activeCountry !== 'All'
+                ? 'bg-lfc-charcoal text-white border-lfc-charcoal' 
+                : 'bg-white text-gray-600 border-gray-200'
+            }`}
+          >
+            <Filter size={18} />
           </button>
         </div>
-      </div>
 
-      {/* Category Pills */}
-      <div className="px-5 mt-4">
-        <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
-          {['All', 'Collectibles', 'Tickets', 'Merchandise', 'NFTs'].map((cat, idx) => (
-            <button 
-              key={cat}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                idx === 0 
-                  ? 'bg-lfc-charcoal text-white' 
-                  : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Collapsible Filters */}
+        <div 
+          className={`transition-all duration-300 overflow-hidden ${
+            isFiltersOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
+          }`}
+        >
+          <div className="p-4 bg-white rounded-2xl shadow-sm border border-gray-100 space-y-4">
+            <div>
+              <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center space-x-1">
+                <Filter size={12} />
+                <span>Category</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {['All', 'Collectibles', 'Tickets', 'Merchandise', 'NFTs'].map(cat => (
+                  <button 
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      activeCategory === cat 
+                        ? 'bg-lfc-red text-white shadow-sm' 
+                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center space-x-1">
+                <MapPin size={12} />
+                <span>Location</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {['All', 'Thailand', 'Japan', 'Hong Kong', 'China', 'Australia', 'UK', 'UAE', 'Malaysia', 'Korea', 'Singapore'].map(country => (
+                  <button 
+                    key={country}
+                    onClick={() => setActiveCountry(country)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      activeCountry === country 
+                        ? 'bg-lfc-red text-white shadow-sm' 
+                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    {country}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -419,7 +474,7 @@ function AuctionCard({
             {/* Bid Info */}
             <div>
               <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold mb-0.5">Current Bid</p>
-              <p className="font-bold text-lg text-lfc-charcoal">{currentBid} <span className="text-sm font-semibold text-gray-500">LFC</span></p>
+              <p className="font-bold text-lg text-lfc-charcoal">{currentBid} <span className="text-sm font-semibold text-gray-500">LFCP</span></p>
               <p className="text-xs text-gray-400">{bids} bids</p>
             </div>
             

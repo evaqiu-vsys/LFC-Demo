@@ -115,7 +115,7 @@ export default function AuctionDetailModal({ isOpen, onClose, item, onPlaceBidSu
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
                   <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Current Bid</p>
-                  <p className="font-bold text-2xl text-lfc-charcoal">{item.currentBid} <span className="text-sm text-gray-500">LFC</span></p>
+                  <p className="font-bold text-2xl text-lfc-charcoal">{item.currentBid} <span className="text-sm text-gray-500">LFCP</span></p>
                 </div>
                 <div className={`p-4 rounded-2xl border ${item.isHot ? 'bg-lfc-red/5 border-lfc-red/20' : 'bg-gray-50 border-gray-100'}`}>
                   <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1 flex items-center">
@@ -147,7 +147,7 @@ export default function AuctionDetailModal({ isOpen, onClose, item, onPlaceBidSu
                     </div>
                     <div className="text-right">
                       <p className={`font-bold text-sm ${index === 0 ? 'text-lfc-green' : 'text-lfc-charcoal'}`}>
-                        {bid.amount} <span className="text-xs font-semibold text-gray-400">LFC</span>
+                        {bid.amount} <span className="text-xs font-semibold text-gray-400">LFCP</span>
                       </p>
                       {index === 0 && <span className="text-[10px] text-lfc-green font-bold uppercase tracking-wider">Highest Bid</span>}
                     </div>

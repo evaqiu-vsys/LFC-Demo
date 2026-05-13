@@ -12,7 +12,7 @@ interface ConfirmModalProps {
   isDanger?: boolean;
 }
 
-export default function ConfirmModal({ isOpen, onClose, onConfirm, title, description, pointsAmount, currency = 'LFC', isDanger = false }: ConfirmModalProps) {
+export default function ConfirmModal({ isOpen, onClose, onConfirm, title, description, pointsAmount, currency = 'LFCP', isDanger = false }: ConfirmModalProps) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showContent, setShowContent] = useState(false);
 

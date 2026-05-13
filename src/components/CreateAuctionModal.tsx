@@ -129,7 +129,7 @@ export default function CreateAuctionModal({ isOpen, onClose, onConfirm }: Creat
                   placeholder="0"
                   className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl p-4 pr-12 text-sm font-bold text-lfc-charcoal focus:outline-none focus:border-lfc-red focus:ring-4 focus:ring-lfc-red/10 transition-all"
                 />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">LFC</div>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">LFCP</div>
               </div>
             </div>
             <div>

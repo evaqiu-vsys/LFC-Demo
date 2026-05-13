@@ -41,7 +41,7 @@ export default function BidModal({ isOpen, onClose, onConfirm, item }: BidModalP
   const handleConfirm = () => {
     const amount = parseInt(bidAmount.replace(/,/g, ''));
     if (isNaN(amount) || amount < minBid) {
-      setError(`Minimum bid is ${minBid.toLocaleString()} LFC`);
+      setError(`Minimum bid is ${minBid.toLocaleString()} LFCP`);
       return;
     }
     onConfirm(amount.toLocaleString());
@@ -96,7 +96,7 @@ export default function BidModal({ isOpen, onClose, onConfirm, item }: BidModalP
           
           <div className="flex justify-between items-center mb-6">
             <span className="text-sm font-medium text-gray-500">Current Top Bid</span>
-            <span className="font-bold text-xl text-lfc-charcoal">{item.currentBid} <span className="text-sm font-semibold text-gray-400">LFC</span></span>
+            <span className="font-bold text-xl text-lfc-charcoal">{item.currentBid} <span className="text-sm font-semibold text-gray-400">LFCP</span></span>
           </div>
 
           <div className="mb-6">
@@ -112,7 +112,7 @@ export default function BidModal({ isOpen, onClose, onConfirm, item }: BidModalP
                 placeholder={`Min ${minBid.toLocaleString()}`}
                 className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl py-4 pl-4 pr-16 text-xl font-bold text-lfc-charcoal focus:outline-none focus:border-lfc-red focus:ring-4 focus:ring-lfc-red/10 transition-all"
               />
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">LFC</div>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">LFCP</div>
             </div>
             {error && <p className="text-lfc-red text-xs mt-2 font-medium animate-fade-in-up">{error}</p>}
           </div>

@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Home, Trophy, ShoppingBag, User } from 'lucide-react';
+import { Home, Crown, ShoppingBag, User, Compass } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 export default function Layout() {
@@ -48,7 +48,8 @@ export default function Layout() {
           <div className="glass rounded-2xl shadow-elevated border border-gray-200/50 px-2 py-2">
             <div className="flex justify-around items-center">
               <NavItem to="/home" icon={<Home size={22} />} label="Home" isActive={location.pathname === '/home'} />
-              <NavItem to="/membership" icon={<Trophy size={22} />} label="Members" isActive={location.pathname === '/membership'} />
+              <NavItem to="/membership" icon={<Crown size={22} />} label="Members" isActive={location.pathname === '/membership'} />
+              <NavItem to="/explore" icon={<Compass size={22} />} label="Explore" isActive={location.pathname === '/explore'} />
               <NavItem to="/marketplace" icon={<ShoppingBag size={22} />} label="Market" isActive={location.pathname === '/marketplace'} />
               <NavItem to="/my" icon={<User size={22} />} label="My" isActive={location.pathname === '/my'} />
             </div>

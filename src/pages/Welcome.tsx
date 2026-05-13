@@ -69,7 +69,7 @@ export default function Welcome() {
         {/* Action Buttons */}
         <div className="w-full max-w-sm space-y-3 animate-fade-in-up delay-300">
           <button 
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/auth', { state: { isRegister: false } })}
             className="group w-full bg-white text-lfc-red font-bold py-4 px-6 rounded-2xl shadow-elevated btn-press hover:shadow-gold transition-all duration-300 relative overflow-hidden"
           >
             <span className="relative z-10 flex items-center justify-center space-x-2">
@@ -87,6 +87,7 @@ export default function Welcome() {
           </button>
           
           <button 
+            onClick={() => navigate('/auth', { state: { isRegister: true } })}
             className="w-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-bold py-4 px-6 rounded-2xl hover:bg-white/20 transition-all duration-300 btn-press"
           >
             Create Account

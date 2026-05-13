@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import { Bell, ChevronRight, Gift, ShoppingBag, Trophy, ArrowUpRight, Sparkles, Ticket, X, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import lfcTravelSetImg from '../assets/lfc-travel-set.png';
 import CheckoutModal from '../components/CheckoutModal';
 
 import logoImg from '../assets/lfc-logo.png';
+import avatarImg from '../assets/avatar.png';
 
 export default function Home() {
+  const navigate = useNavigate();
   const [points] = useState(12450);
   const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
   const [isCheckoutConfirmOpen, setIsCheckoutConfirmOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('Purchase Successful!');
 
   const handleCheckoutConfirm = () => {
     setIsCheckoutConfirmOpen(false);
     setIsOfferModalOpen(false);
+    setToastMessage('Purchase Successful!');
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
   };
@@ -73,7 +78,7 @@ export default function Home() {
                 <div className="relative">
                   <div className="w-14 h-14 rounded-full border-2 border-lfc-gold p-0.5 overflow-hidden bg-gray-800 shadow-lg">
                     <img 
-                      src="https://i.pravatar.cc/150?img=33" 
+                      src={avatarImg} 
                       alt="Avatar" 
                       className="w-full h-full rounded-full object-cover"
                     />
@@ -102,7 +107,7 @@ export default function Home() {
                 <span className="text-5xl font-extrabold text-white tracking-tight tabular-nums">
                   {points.toLocaleString()}
                 </span>
-                <span className="text-lfc-gold ml-2 font-bold text-lg">LFC</span>
+                <span className="text-lfc-gold ml-2 font-bold text-lg">LFCP</span>
               </div>
               <div className="flex items-center mt-2 space-x-2">
               </div>
@@ -120,7 +125,7 @@ export default function Home() {
           icon={<Gift size={22} />} 
           label="Explore Rewards" 
           color="red"
-          onClick={() => {}}
+          onClick={() => navigate('/explore#rewards')}
         />
         <ActionButton 
           icon={<Trophy size={22} />} 
@@ -191,28 +196,6 @@ export default function Home() {
                 <ArrowUpRight size={16} />
               </button>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Explore Rewards Section (Previously Upcoming Match) */}
-      <div className="px-5 mt-8">
-        <h2 className="text-xl font-bold text-lfc-charcoal mb-4">Explore Rewards</h2>
-        <div className="bg-gradient-to-r from-lfc-red to-lfc-red-dark rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-10 w-24 h-24 bg-black/10 rounded-full translate-y-1/2"></div>
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="pr-4">
-              <div className="flex items-center space-x-1.5 mb-2">
-                <Sparkles size={14} className="text-lfc-gold" />
-                <p className="text-lfc-gold text-xs font-bold uppercase tracking-wider">Members Only</p>
-              </div>
-              <p className="font-bold text-lg leading-tight mb-1">Unlock Exclusive Stadium Experiences</p>
-              <p className="text-white/70 text-sm">Use points for matchday rewards</p>
-            </div>
-            <button className="shrink-0 w-12 h-12 bg-white text-lfc-red rounded-full flex items-center justify-center shadow-lg btn-press hover:scale-105 transition-transform">
-              <ArrowUpRight size={20} />
-            </button>
           </div>
         </div>
       </div>
@@ -353,11 +336,11 @@ export default function Home() {
           showToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
-        <div className="bg-lfc-charcoal text-white px-6 py-3 rounded-full shadow-2xl flex items-center space-x-3">
-          <div className="w-6 h-6 bg-lfc-green rounded-full flex items-center justify-center">
+        <div className="bg-lfc-charcoal text-white px-6 py-3 rounded-full shadow-2xl flex items-center space-x-3 whitespace-nowrap">
+          <div className="w-6 h-6 bg-lfc-green rounded-full flex items-center justify-center shrink-0">
             <CheckCircle2 size={14} className="text-white" />
           </div>
-          <span className="font-bold text-sm">Purchase Successful!</span>
+          <span className="font-bold text-sm">{toastMessage}</span>
         </div>
       </div>
     </div>

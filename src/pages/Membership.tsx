@@ -65,16 +65,21 @@ export default function Membership() {
         <div className="flex items-center mb-6">
           {tiers.map((tier, index) => (
             <div key={tier.name} className="flex items-center flex-1">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center relative overflow-hidden ${
                 index <= currentTierIndex 
                   ? tier.color + ' text-white shadow-lg' 
                   : 'bg-gray-200 text-gray-400'
               }`}>
-                {index <= currentTierIndex ? (
-                  <Check size={14} strokeWidth={3} />
-                ) : (
-                  <span className="text-xs font-bold">{tier.level}</span>
-                )}
+                <div className="absolute inset-0 flex items-center justify-center opacity-30 mix-blend-overlay">
+                  <SoccerIcon className="w-10 h-10" />
+                </div>
+                <div className="relative z-10 flex items-center justify-center">
+                  {index <= currentTierIndex ? (
+                    <Check size={14} strokeWidth={4} />
+                  ) : (
+                    <span className="text-xs font-bold">{tier.level}</span>
+                  )}
+                </div>
               </div>
               {index < tiers.length - 1 && (
                 <div className={`flex-1 h-1 mx-1 rounded-full ${
@@ -288,7 +293,7 @@ export default function Membership() {
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleUpgrade}
         title="Confirm Upgrade"
-        description="Upgrade to Diamond Elite for 37,550 LFC points. Unlock exclusive benefits and experiences."
+        description="Upgrade to Diamond Elite for 37,550 LFCP points. Unlock exclusive benefits and experiences."
         pointsAmount="37,550"
       />
 
@@ -304,6 +309,20 @@ export default function Membership() {
         title={selectedBenefitTitle}
       />
     </div>
+  );
+}
+
+function SoccerIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className}>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 15l-3-2.5.5-4.5h5l.5 4.5L12 15z" fill="currentColor" fillOpacity="0.4" />
+      <path d="M12 15v7" />
+      <path d="M9 12.5L2.5 14" />
+      <path d="M15 12.5L21.5 14" />
+      <path d="M9.5 8L5.5 3" />
+      <path d="M14.5 8l4-5" />
+    </svg>
   );
 }
 

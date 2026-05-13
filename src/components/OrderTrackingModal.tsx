@@ -42,7 +42,7 @@ export default function OrderTrackingModal({ isOpen, onClose }: OrderTrackingMod
     {
       id: 'LFC-20260420-1102',
       item: 'Signed 2005 Champions League Final Scarf',
-      price: '4,500 LFC',
+      price: '4,500 LFCP',
       status: 'Delivered',
       date: 'Apr 20, 2026',
       image: 'https://images.unsplash.com/photo-1577223625816-7546f13df25d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
