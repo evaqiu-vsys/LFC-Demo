@@ -131,7 +131,7 @@ export default function Home() {
           icon={<Trophy size={22} />} 
           label="Upgrade Tier" 
           color="outline"
-          onClick={() => {}}
+          onClick={() => navigate('/membership#compare-benefits')}
         />
       </div>
 

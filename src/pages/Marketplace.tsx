@@ -53,7 +53,11 @@ export default function Marketplace() {
 
   const handleConfirmCreate = (item: any) => {
     setIsCreateModalOpen(false);
-    showSuccessToast(`Listing "${item.title}" created successfully`);
+    if (item.isCustom) {
+      showSuccessToast(`Listing "${item.title}" submitted for operator approval`);
+    } else {
+      showSuccessToast(`Listing "${item.title}" created successfully`);
+    }
   };
 
   const tabs = ['Auctions', 'Buy Now', 'Rentals', 'My Listings'];

@@ -17,9 +17,16 @@ export default function Explore() {
       const el = document.getElementById('rewards');
       if (el) {
         setTimeout(() => {
-          // Adjust scroll position to account for sticky header
-          const y = el.getBoundingClientRect().top + window.scrollY - 100;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+          // Find the scrollable container (the <main> element in Layout.tsx)
+          const scrollContainer = el.closest('main') || document.querySelector('main');
+          if (scrollContainer) {
+            // Calculate position accounting for the sticky header (~80px)
+            const y = el.getBoundingClientRect().top + scrollContainer.scrollTop - scrollContainer.getBoundingClientRect().top - 80;
+            scrollContainer.scrollTo({ top: y, behavior: 'smooth' });
+          } else {
+            // Fallback
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }, 100);
       }
     }

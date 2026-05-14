@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Check, Lock, Crown, Star, ChevronRight, Sparkles, Zap, Gift, Plane, GlassWater } from 'lucide-react';
 import ConfirmModal from '../components/ConfirmModal';
 import BenefitQRModal from '../components/BenefitQRModal';
@@ -11,6 +12,25 @@ export default function Membership() {
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [selectedBenefitTitle, setSelectedBenefitTitle] = useState('');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#compare-benefits') {
+      const el = document.getElementById('compare-benefits');
+      if (el) {
+        setTimeout(() => {
+          const scrollContainer = el.closest('main') || document.querySelector('main');
+          if (scrollContainer) {
+            // Account for sticky header
+            const y = el.getBoundingClientRect().top + scrollContainer.scrollTop - scrollContainer.getBoundingClientRect().top - 80;
+            scrollContainer.scrollTo({ top: y, behavior: 'smooth' });
+          } else {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      }
+    }
+  }, [location]);
 
   const handleUpgrade = () => {
     setIsUpgraded(true);
@@ -203,7 +223,7 @@ export default function Membership() {
       </div>
 
       {/* Compare Benefits - Refined Table */}
-      <div className="px-5 mt-8">
+      <div id="compare-benefits" className="px-5 mt-8">
         <h2 className="text-lg font-bold text-lfc-charcoal mb-4">Compare Benefits</h2>
         
         <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
